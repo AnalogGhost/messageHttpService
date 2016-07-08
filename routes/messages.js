@@ -15,12 +15,45 @@ router.post('/', function(req,res,next) {
     res.status(400).json({ error: 'Bad Request' });
   }
   knex('messages')
-    .insert({name: req.body.message.name, content:req.body.message.content})
+    .insert({
+      name: req.body.message.name,
+      content:req.body.message.content
+    })
     .then(function() {
       res.send("Message Received");
     })
     .catch(function(err) {
       next(err);
     });
-})
+});
+
+router.put('/:id', function(req,res,next) {
+  if (!req.params.id) res.status(400).json({ error: 'Bad Request' });
+  knex('messages')
+    .where('id', req.params.id)
+    .update({
+      name: req.body.message.name,
+      content:req.body.message.content
+    })
+    .then(function() {
+      res.send("Message Updated");
+    })
+    .catch(function(err) {
+      next(err);
+    });
+
+});
+
+router.delete('/:id', function (req,res,next) {
+  if (!req.params.id) res.status(400).json({ error: 'Bad Request' });
+  knex('messages')
+    .where('id', req.params.id)
+    .del()
+    .then(function() {
+      res.send("Message Deleted");
+    })
+    .catch(function(err) {
+      next(err);
+    });
+});
 module.exports = router;
