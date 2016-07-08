@@ -44,6 +44,11 @@ router.put('/:id', function(req,res,next) {
 
 });
 
+router.delete('/', function(req,res,next) {
+  knex('messages').del().then(function() {
+    res.send("All Gone")
+  });
+});
 router.delete('/:id', function (req,res,next) {
   if (!req.params.id) res.status(400).json({ error: 'Bad Request' });
   knex('messages')
